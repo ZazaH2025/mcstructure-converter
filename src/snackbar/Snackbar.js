@@ -1,32 +1,65 @@
-// https://maku.blog/p/jbv7gox/
+/**
+ * Snackbar Context Provider
+ * 
+ * This file implements a global snackbar (toast notification) system using React Context.
+ * It allows any component in the app to trigger notifications without prop drilling.
+ * 
+ * The snackbar displays temporary messages to the user (success, error, warning, info)
+ * and automatically disappears after a few seconds.
+ * 
+ * Usage in components:
+ *   const { showSnackbar } = useSnackbar();
+ *   showSnackbar('Operation successful!', 'success');
+ * 
+ * Reference: https://maku.blog/p/jbv7gox/
+ */
 
 import * as React from 'react';
 import { GlobalSnackbar } from './GlobalSnackbar';
 
-/** スナックバーの表示状態を管理するコンテキストオブジェクト */
+/**
+ * Context object that stores snackbar state and control function
+ * 
+ * Provides:
+ * - message: Current notification message text
+ * - severity: Message type ('error', 'warning', 'info', 'success')
+ * - showSnackbar: Function to display a new notification
+ */
 export const SnackbarContext = React.createContext({
-  message: '', // デフォルト値
-  severity: 'error', // デフォルト値
-  // eslint-disable-next-line
-  showSnackbar: (_message, _severity) => {}, // ダミー関数
+  message: '',              // Default: no message shown
+  severity: 'error',        // Default severity
+  showSnackbar: (_message, _severity) => {},  // Placeholder function
 })
 
-  /**
-   * SnackbarContext コンテキストオブジェクトを提供するコンポーネント。
-   *
-   * このコンポーネント以下に配置した子コンポーネントであれば、
-   * useSnackbar フック関数を呼び出すことができます。
-   */
+/**
+ * SnackbarContext Provider Component
+ * 
+ * Wraps the application to provide snackbar functionality to all child components.
+ * This component manages the snackbar state and renders the GlobalSnackbar component.
+ * 
+ * Should be placed high in the component tree (typically in _app.js) so that
+ * all pages and components can access the snackbar functionality.
+ * 
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Child components that can use the snackbar
+ */
 export const SnackbarContextProvider = ({ children }) => {
   const context = React.useContext(SnackbarContext);
   const [message, setMessage] = React.useState(context.message);
   const [severity, setSeverity] = React.useState(context.severity);
 
-  // コンテクストオブジェクトに自分自身の値を変更する関数をセットする
+  // Create the context value object with current state and update function
+  // useMemo prevents unnecessary re-renders of consuming components
   const newContext = React.useMemo(
     () => ({
       message,
       severity,
+      /**
+       * Function to display a snackbar notification
+       * 
+       * @param {string} message - Text to display in the notification
+       * @param {string} severity - Type of message: 'error', 'warning', 'info', or 'success'
+       */
       showSnackbar: (message, severity) => {
         setMessage(message);
         setSeverity(severity);
@@ -35,7 +68,10 @@ export const SnackbarContextProvider = ({ children }) => {
     [message, severity, setMessage, setSeverity]
   );
 
-  // スナックバーを閉じるためのハンドラー関数
+  /**
+   * Closes the snackbar by clearing the message
+   * Called automatically after the auto-hide duration or when user clicks away
+   */
   const handleClose = React.useCallback(() => {
     setMessage('');
   }, [setMessage]);
@@ -43,8 +79,9 @@ export const SnackbarContextProvider = ({ children }) => {
   return (
     <SnackbarContext.Provider value={newContext}>
       {children}
+      {/* The actual snackbar component that displays notifications */}
       <GlobalSnackbar
-        open={newContext.message !== ''}
+        open={newContext.message !== ''}     // Show when there's a message
         message={newContext.message}
         severity={newContext.severity}
         onClose={handleClose}
@@ -53,7 +90,18 @@ export const SnackbarContextProvider = ({ children }) => {
   )
 }
 
-/** SnackbarContext を簡単に使うためのユーティリティ関数 */
+/**
+ * Custom Hook for Using Snackbar
+ * 
+ * Provides easy access to the snackbar context from any component.
+ * 
+ * @returns {Object} Context object with showSnackbar function
+ * 
+ * @example
+ * const { showSnackbar } = useSnackbar();
+ * showSnackbar('File uploaded successfully!', 'success');
+ * showSnackbar('An error occurred', 'error');
+ */
 export function useSnackbar() {
   return React.useContext(SnackbarContext);
 }
