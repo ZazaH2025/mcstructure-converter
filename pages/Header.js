@@ -93,7 +93,7 @@ function Menu({ onClose, pageId }) {
       <nav className="menu" style={{ padding: "1rem 0.5rem" }}>
         <ul>
           {/* Map through pages array to create menu items */}
-          {...pages.map((p) => (
+          {pages.map((p) => (
             <li key={p.id} style={pageId === p.id ? currentPageStyle : null}>
               {/* Next.js Link for client-side navigation */}
               <Link href={p.href}>{p.title}</Link>

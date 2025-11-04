@@ -186,7 +186,7 @@ export default function ItemGenerator() {
                 </IconButton>
               </Box>
               
-              {...itemLore.map((lore, loreIndex) => (
+              {itemLore.map((lore, loreIndex) => (
                 <Box key={loreIndex} sx={{ display: 'flex', mb: 1 }}>
                   <TextField 
                     multiline 
@@ -219,7 +219,7 @@ export default function ItemGenerator() {
                 </IconButton>
               </Box>
               
-              {...itemEnchant.map((enchant, enchIndex) => (
+              {itemEnchant.map((enchant, enchIndex) => (
                 <Paper key={enchIndex} sx={{ p: 2, mb: 1, bgcolor: 'white' }}>
                   <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>
                     ID: {enchant.id.value ?? '-'} | Level: {enchant.lvl.value ?? '-'}
@@ -235,7 +235,7 @@ export default function ItemGenerator() {
                         changeEnchant(itemEnchant, i);
                       }}
                     >
-                      {...Object.keys(EnchantmentTypes).map(enchId => (
+                      {Object.keys(EnchantmentTypes).map(enchId => (
                         <MenuItem key={enchId} value={enchId}>
                           {EnchantmentTypes[enchId]}
                         </MenuItem>
@@ -322,7 +322,7 @@ export default function ItemGenerator() {
           </Box>
           
           <List sx={{ p: 0 }}>
-            {...createPanel()}
+            {createPanel()}
           </List>
         </CardContent>
       </Card>
@@ -419,7 +419,7 @@ function exportJson(data) {
 function generateTree(obj) {
   return (
     <ul style={{ paddingLeft: '1.5em', listStyle: 'none' }}>
-      {...Object.keys(obj).map(k => {
+      {Object.keys(obj).map(k => {
         if (isObject(obj[k])) return <li key={k} style={{ marginBottom: '0.5em' }}><strong>{k}:</strong> {generateTree(obj[k])}</li>
         return <li
           key={k}
