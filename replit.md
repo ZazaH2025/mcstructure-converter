@@ -2,6 +2,19 @@
 
 This is a web application for converting Minecraft Bedrock Edition (.mcstructure) files into editable JSON format and vice versa. The application also includes an item generator tool that creates custom Minecraft items with enchantments. Built with Next.js and Material-UI, it provides a user-friendly interface for Minecraft content creators to manipulate structure files without directly editing NBT (Named Binary Tag) data.
 
+# Recent Changes
+
+**November 4, 2025** - Major visual redesign with Minecraft-inspired theme:
+- Implemented Minecraft-inspired color palette (green theme: #2d5016, #4a7c2c, #43a047, #4CAF50)
+- Added gradient header with animation effects and pickaxe emoji
+- Redesigned both pages with modern card-based layouts
+- Enhanced UI components with better spacing, shadows, and rounded corners
+- Added smooth transitions and hover effects throughout
+- Improved form inputs with focused states and better visual feedback
+- Added "Minecraft Bedrock Edition" badges to both pages
+- Updated button styling with modern Material-UI design patterns
+- Improved responsive design and mobile-first approach
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
